@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/deferredable"
-require "delayer/deferred/tools"
-require "delayer/deferred/version"
 
 module Delayer::Deferred
   class Deferred
@@ -24,10 +21,10 @@ module Delayer::Deferred
     def self.delayer
        ::Delayer end
 
-    def self.new(*args)
+    def self.new(*args, &block)
       deferred = super(*args)
       if block_given?
-        deferred.next(&Proc.new)
+        deferred.next(&block)
       else
         deferred end
     end

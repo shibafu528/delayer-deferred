@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/version"
-require "delayer/deferred/result_container"
 
 # なんでもDeferred
 module Delayer::Deferred::Deferredable
@@ -133,9 +131,9 @@ module Delayer::Deferred::Deferredable
   def _post(kind, &proc)
     @next = delayer.Deferred.new(self)
     @next.callback[kind] = proc
-    if defined?(@next_call_stat) and defined?(@next_call_value)
+    if instance_variable_defined?(:@next_call_stat) and instance_variable_defined?(:@next_call_value)
       @next.__send__({ok: :call, ng: :fail}[@next_call_stat], @next_call_value)
-    elsif defined?(@follow) and @follow.nil?
+    elsif instance_variable_defined?(:@follow) and @follow.nil?
       call end
     @next end
 
@@ -144,7 +142,7 @@ module Delayer::Deferred::Deferredable
     self end
 
   def _success_action(obj)
-    if defined?(@next)
+    if instance_variable_defined?(:@next)
       @next.call(obj)
     else
       register_next_call(:ok, obj)
@@ -152,7 +150,7 @@ module Delayer::Deferred::Deferredable
   end
 
   def _fail_action(err_obj)
-    if defined?(@next)
+    if instance_variable_defined?(:@next)
       @next.fail(err_obj)
     else
       register_next_call(:ng, err_obj)
