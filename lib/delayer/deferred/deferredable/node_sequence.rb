@@ -121,7 +121,15 @@ module Delayer::Deferred::Deferredable
       .add(ROTTEN, :called)
       .add(GENOCIDE).freeze
 
-    SEQUENCE_LOCK = Monitor.new
+    if const_defined?(:Monitor)
+      SEQUENCE_LOCK = Monitor.new
+    else
+      SEQUENCE_LOCK = Class.new do
+        def synchronize
+          yield
+        end
+      end.new
+    end
 
     def sequence
       @sequence ||= FRESH
