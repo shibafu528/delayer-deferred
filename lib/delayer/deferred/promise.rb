@@ -9,7 +9,7 @@ module Delayer::Deferred
 
     class << self
       def new(stop=false, options = {}, &block)
-        options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+        options = {:name => caller.first.to_s}.merge(options)
         name = options[:name]
 
         result = promise = super(name: name)

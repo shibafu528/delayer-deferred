@@ -14,7 +14,7 @@ class Thread
   # このメソッドはスレッドセーフです。
   # TODO: procが空のとき例外を発生させる
   def next(options = {}, &proc)
-    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    options = {:name => caller.first.to_s}.merge(options)
     name = options[:name]
 
     add_child(Delayer::Deferred::Chain::Next.new(&proc), name: name)
@@ -26,7 +26,7 @@ class Thread
   # このメソッドはスレッドセーフです。
   # TODO: procが空のとき例外を発生させる
   def trap(options = {}, &proc)
-    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    options = {:name => caller.first.to_s}.merge(options)
     name = options[:name]
 
     add_child(Delayer::Deferred::Chain::Trap.new(&proc), name: name)
@@ -34,7 +34,7 @@ class Thread
   alias error trap
 
   def add_child(chainable, options = {})
-    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    options = {:name => caller.first.to_s}.merge(options)
     name = options[:name]
 
     __gen_promise(name).add_child(chainable)
