@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/request"
-require "delayer/deferred/response"
+#require "delayer/deferred/request"
+#require "delayer/deferred/response"
 
 module Delayer::Deferred
 =begin rdoc
@@ -23,8 +23,9 @@ response :: Delayer::Deferred::Response::Base Deferredに渡す値
   _Delayer::Deferred::Response::Ok.new_ の引数に渡され、その結果が利用される
 =end
   class Worker
-    def initialize(delayer:, initial:)
-      @delayer, @initial = delayer, initial
+    def initialize(options = {})
+      @delayer = options[:delayer] or raise ArgumentError, "missing keyword: delayer"
+      @initial = options[:initial] or raise ArgumentError, "missing keyword: initial"
     end
 
     def push(deferred)

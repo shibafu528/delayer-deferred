@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/deferredable/chainable"
-require "delayer/deferred/deferredable/node_sequence"
-require "delayer/deferred/response"
+#require "delayer/deferred/deferredable/chainable"
+#require "delayer/deferred/deferredable/node_sequence"
+#require "delayer/deferred/response"
 
 module Delayer::Deferred::Deferredable
 =begin rdoc

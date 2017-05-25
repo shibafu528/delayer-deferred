@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-require "delayer"
-require "delayer/deferred/deferredable/awaitable"
+#require "delayer"
+#require "delayer/deferred/deferredable/awaitable"
 
 class Thread
   include ::Delayer::Deferred::Deferredable::Awaitable
@@ -13,7 +13,10 @@ class Thread
   # 新しいDeferredのインスタンスを返す。
   # このメソッドはスレッドセーフです。
   # TODO: procが空のとき例外を発生させる
-  def next(name: caller_locations(1,1).first.to_s, &proc)
+  def next(options = {}, &proc)
+    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    name = options[:name]
+
     add_child(Delayer::Deferred::Chain::Next.new(&proc), name: name)
   end
   alias deferred next
@@ -22,12 +25,18 @@ class Thread
   # 新しいDeferredのインスタンスを返す。
   # このメソッドはスレッドセーフです。
   # TODO: procが空のとき例外を発生させる
-  def trap(name: caller_locations(1,1).first.to_s, &proc)
+  def trap(options = {}, &proc)
+    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    name = options[:name]
+
     add_child(Delayer::Deferred::Chain::Trap.new(&proc), name: name)
   end
   alias error trap
 
-  def add_child(chainable, name: caller_locations(1,1).first.to_s)
+  def add_child(chainable, options = {})
+    options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+    name = options[:name]
+
     __gen_promise(name).add_child(chainable)
   end
 

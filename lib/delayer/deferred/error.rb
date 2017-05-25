@@ -5,7 +5,9 @@ module Delayer::Deferred
 
   class ForeignCommandAborted < Error
     attr_reader :process
-    def initialize(message, process:)
+    def initialize(message, options = {})
+      process = options[:process] or raise ArgumentError, "missing keyword: process"
+
       super(message)
       @process = process
     end
@@ -13,7 +15,10 @@ module Delayer::Deferred
 
   SequenceError = Class.new(Error) do
     attr_accessor :deferred
-    def initialize(message, deferred: nil)
+    def initialize(message, options = {})
+      options = {:deferred => nil}.merge(options)
+      deferred = options[:deferred]
+
       super(message)
       @deferred = deferred
     end

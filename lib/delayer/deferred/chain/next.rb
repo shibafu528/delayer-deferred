@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/chain/base"
+#require "delayer/deferred/chain/base"
 
 module Delayer::Deferred::Chain
   class Next < Base

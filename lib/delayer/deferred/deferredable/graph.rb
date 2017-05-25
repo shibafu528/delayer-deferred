@@ -26,7 +26,11 @@ graphvizによってChainableなDeferredをDOT言語形式でダンプする機�
     # ==== Return
     # [String] DOT言語によるグラフ
     # [output:] 引数 output: に指定されたオブジェクト
-    def graph(child_only: false, output: String.new)
+    def graph(options = {})
+      options = {:child_only => false, :output => String.new}.merge(options)
+      child_only = options[:child_only]
+      output = options[:output]
+
       if child_only
         output << "digraph Deferred {\n".freeze
         Enumerator.new{ |yielder|
@@ -47,7 +51,10 @@ graphvizによってChainableなDeferredをDOT言語形式でダンプする機�
     # ==== Return
     # [Tempfile] ブロックを指定しなかった場合。作成された一時ファイルオブジェクト
     # [Object] ブロックが指定された場合。ブロックの実行結果。
-    def graph_save(permanent: false, &block)
+    def graph_save(options = {}, &block)
+      options = {:permanent => false}.merge(options)
+      permanent = options[:permanent]
+
       if block
         Tempfile.open{|tmp|
           graph(output: tmp)
@@ -66,7 +73,11 @@ graphvizによってChainableなDeferredをDOT言語形式でダンプする機�
     # [format:] 画像の拡張子
     # ==== Return
     # [String] 書き出したファイル名
-    def graph_draw(dir: '/tmp', format: 'svg'.freeze)
+    def graph_draw(options = {})
+      options = {:dir => '/tmp', :format => 'svg'.freeze}.merge(options)
+      dir = options[:dir]
+      format = options[:format]
+
       graph_save do |dotfile|
         base = File.basename(dotfile.path)
         dest = File.join(dir, "#{base}.#{format}")
@@ -77,7 +88,9 @@ graphvizによってChainableなDeferredをDOT言語形式でダンプする機�
 
     # このノードとその子全てのDeferredチェインの様子を、DOT言語フォーマットで出力する。
     # Delayer::Deferred::Deferredable::Graph#graph の内部で利用されるため、将来このメソッドのインターフェイスは変更される可能性がある。
-    def graph_child(output:)
+    def graph_child(options = {})
+      output = options[:output] or raise ArgumentError, "missing keyword: output"
+
       output << graph_mynode
       if has_child?
         @child.graph_child(output: output)

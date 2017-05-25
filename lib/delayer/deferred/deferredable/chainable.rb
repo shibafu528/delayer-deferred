@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/deferredable/awaitable"
-require "delayer/deferred/deferredable/graph"
-require "delayer/deferred/deferredable/node_sequence"
+#require "delayer/deferred/deferredable/awaitable"
+#require "delayer/deferred/deferredable/graph"
+#require "delayer/deferred/deferredable/node_sequence"
 
 module Delayer::Deferred::Deferredable
   module Chainable

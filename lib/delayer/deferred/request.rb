@@ -19,7 +19,10 @@ Fiberが次のWorkerを要求している時に返す値。
     # ==== Args
     # [deferred] 実行が完了したDeferred 。次のDeferredとして _deferred.child_ を呼び出す
     # [worker] このDeferredチェインを実行しているWorker
-    def accept_request(worker:, deferred:)
+    def accept_request(options = {})
+      worker = options[:worker] or raise ArgumentError, "missing keyword: worker"
+      deferred = options[:deferred] or raise ArgumentError, "missing keyword: deferred"
+
       if deferred.has_child?
         worker.push(deferred.child)
       else
@@ -38,7 +41,10 @@ _value_ には、実行完了を待つDeferredが入っている。
 =end
   class Await < Base
     alias_method :foreign_deferred, :value
-    def accept_request(worker:, deferred:)
+    def accept_request(options = {})
+      worker = options[:worker] or raise ArgumentError, "missing keyword: worker"
+      deferred = options[:deferred] or raise ArgumentError, "missing keyword: deferred"
+
       deferred.enter_await
       foreign_deferred.add_child(Delayer::Deferred::Chain::Await.new(worker: worker, deferred: deferred))
     end
@@ -50,7 +56,10 @@ Tools#pass から利用される。
 新たなインスタンスは作らず、 _PASS_ にあるインスタンスを使うこと。
 =end
   class Pass < Base
-    def accept_request(worker:, deferred:)
+    def accept_request(options = {})
+      worker = options[:worker] or raise ArgumentError, "missing keyword: worker"
+      deferred = options[:deferred] or raise ArgumentError, "missing keyword: deferred"
+
       deferred.enter_pass
       worker.resume_pass(deferred)
     end

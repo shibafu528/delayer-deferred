@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/chain/base"
+#require "delayer/deferred/chain/base"
 
 module Delayer::Deferred::Chain
   class Await < Base
-    def initialize(worker:, deferred:)
+    def initialize(options = {})
+      worker = options[:worker] or raise ArgumentError, "missing keyword: worker"
+      deferred = options[:deferred] or raise ArgumentError, "missing keyword: deferred"
+
       super()
       @worker, @awaiting_deferred = worker, deferred
       deferred.add_awaited(self)
@@ -17,7 +20,9 @@ module Delayer::Deferred::Chain
       change_sequence(:complete)
     end
 
-    def graph_child(output:)
+    def graph_child(options = {})
+      output = options[:output] or raise ArgumentError, "missing keyword: output"
+
       output << graph_mynode
       if has_child?
         @child.graph_child(output: output)

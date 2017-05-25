@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-require "delayer/deferred/tools"
-require "delayer/deferred/deferredable/trigger"
+#require "delayer/deferred/tools"
+#require "delayer/deferred/deferredable/trigger"
 
 module Delayer::Deferred
   class Promise
@@ -8,7 +8,10 @@ module Delayer::Deferred
     include Deferredable::Trigger
 
     class << self
-      def new(stop=false, name: caller_locations(1,1).first.to_s,  &block)
+      def new(stop=false, options = {}, &block)
+        options = {:name => caller_locations(1,1).first.to_s}.merge(options)
+        name = options[:name]
+
         result = promise = super(name: name)
         result = promise.next(&block) if block_given?
         promise.call(true) unless stop
@@ -42,7 +45,9 @@ module Delayer::Deferred
       end
     end
 
-    def initialize(name:)
+    def initialize(options = {})
+      name = options[:name] or raise ArgumentError, "missing keyword: name"
+
       super()
       @name = name
     end

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-require 'delayer/deferred/error'
+#require 'delayer/deferred/error'
 
-require 'thread'
+#require 'thread'
 
 module Delayer::Deferred::Deferredable
   module NodeSequence
