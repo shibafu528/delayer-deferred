@@ -117,7 +117,7 @@ module Delayer::Deferred::Deferredable
     private
 
     def call_child_observer
-      if has_child? and defined?(@child_observer)
+      if has_child? and instance_variable_defined?(:@child_observer)
         change_sequence(:called)
         @child_observer.push(@child)
       end
@@ -128,7 +128,7 @@ module Delayer::Deferred::Deferredable
       when NodeSequence::BURST_OUT
         call_child_observer
       when NodeSequence::GENOCIDE
-        @parent.cancel if defined?(@parent) and @parent
+        @parent.cancel if instance_variable_defined?(:@parent) and @parent
       when NodeSequence::RESERVED_C, NodeSequence::RUN_C, NodeSequence::PASS_C, NodeSequence::AWAIT_C, NodeSequence::GRAFT_C
         if !has_child?
           notice "child: #{@child.inspect}"
@@ -143,7 +143,7 @@ module Delayer::Deferred::Deferredable
     end
 
     def graph_mynode
-      if defined?(@seq_logger)
+      if instance_variable_defined?(:@seq_logger)
         label = "#{node_name}\n(#{@seq_logger.map(&:name).join('→')})"
       else
         label = "#{node_name}\n(#{sequence.name})"
