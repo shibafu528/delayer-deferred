@@ -22,6 +22,7 @@ MRuby::Gem::Specification.new('mruby-delayer-deferred') do |spec|
   }
   spec.rbfiles = (require_graph.tsort - external_rb_require).map { |file| File.expand_path("#{__dir__}/mrblib/#{file}.rb") }
   
-  spec.add_dependency 'mruby-struct', :core => 'mruby-struct'
+  spec.add_dependency 'mruby-struct'
+  spec.add_dependency 'mruby-catch-throw'
   spec.add_dependency 'mruby-delayer', :github => 'shibafu528/mruby-delayer'
 end

@@ -98,6 +98,7 @@ response :: Delayer::Deferred::Response::Base Deferredに渡す値
             end
             throw :success, res
           rescue Exception => err
+            raise err if err.is_a?(UncaughtThrowError) && err.tag == :success
             throw :__deferredable_fail, err
           end
         end
