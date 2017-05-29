@@ -17,7 +17,7 @@ MRuby::Gem::Specification.new('mruby-delayer-deferred') do |spec|
 
   external_rb_require = %w[delayer thread]
   require_graph = external_rb_require.map {|item| [item, []] }.to_h
-  Dir["#{__dir__}/lib/**/*.rb"].each { |file|
+  Dir["#{__dir__}/lib/**/*.rb"].sort.each { |file|
     require_graph[file[/\A#{__dir__}\/lib\/(.*)\.rb\Z/, 1]] = File.readlines(file).grep(/^#require/) {|g| g.scan(/^#require ["'](.*)["']/) }.flatten
   }
   spec.rbfiles = (require_graph.tsort - external_rb_require).map { |file| File.expand_path("#{__dir__}/lib/#{file}.rb") }
