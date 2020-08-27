@@ -8,10 +8,7 @@ module Delayer::Deferred
     include Deferredable::Trigger
 
     class << self
-      def new(stop=false, options = {}, &block)
-        options = {:name => caller.first.to_s}.merge(options)
-        name = options[:name]
-
+      def new(stop=false, name: caller.first.to_s, &block)
         result = promise = super(name: name)
         result = promise.next(&block) if block_given?
         promise.call(true) unless stop
