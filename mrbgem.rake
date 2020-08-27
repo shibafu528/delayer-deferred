@@ -24,5 +24,5 @@ MRuby::Gem::Specification.new('mruby-delayer-deferred') do |spec|
   
   spec.add_dependency 'mruby-struct'
   spec.add_dependency 'mruby-catch-throw'
-  spec.add_dependency 'mruby-delayer', :github => 'shibafu528/mruby-delayer'
+  spec.add_dependency 'mruby-delayer', :github => 'shibafu528/mruby-delayer', :branch => 'mruby'
 end
