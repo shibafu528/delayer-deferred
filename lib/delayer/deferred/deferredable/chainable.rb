@@ -79,7 +79,7 @@ module Delayer::Deferred::Deferredable
     end
 
     def add_awaited(awaitable)
-      @awaited = [*awaited, awaitable].freeze
+      @awaited = [*awaited.dup, awaitable].freeze
       self
     end
 
