@@ -14,7 +14,7 @@ module Delayer
       #真ならデバッグ情報を集める
       attr_accessor :debug
 
-      def new(*rest, name: caller.first.to_s, &block)
+      def new(*rest, name: caller&.first&.to_s, &block)
         super(*rest, name: name, &block)
       end
 

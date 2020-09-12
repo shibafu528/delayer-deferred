@@ -8,7 +8,7 @@ module Delayer::Deferred
     include Deferredable::Trigger
 
     class << self
-      def new(stop=false, name: caller.first.to_s, &block)
+      def new(stop=false, name: caller&.first&.to_s, &block)
         result = promise = super(name: name)
         result = promise.next(&block) if block_given?
         promise.call(true) unless stop
@@ -42,9 +42,7 @@ module Delayer::Deferred
       end
     end
 
-    def initialize(options = {})
-      name = options[:name] or raise ArgumentError, "missing keyword: name"
-
+    def initialize(name:)
       super()
       @name = name
     end
